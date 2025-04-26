@@ -1,26 +1,22 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import constructorPageSlice from './constructorPageSlice'
+import { configureStore } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import rootReducer from './rootReducer';
+import { RootState } from './rootReducer';
 
-import {
-  TypedUseSelectorHook,
-  useDispatch as dispatchHook,
-  useSelector as selectorHook
-} from 'react-redux';
-
-const rootReducer = combineReducers({
-  constructor: constructorPageSlice
-}) // Заменить на импорт настоящего редьюсера
-
+// Создаем store первым
 const store = configureStore({
   reducer: rootReducer,
   devTools: process.env.NODE_ENV !== 'production'
 });
 
-export type RootState = ReturnType<typeof rootReducer>;
-
+// Получаем тип состояния напрямую из store
 export type AppDispatch = typeof store.dispatch;
 
-export const useDispatch: () => AppDispatch = () => dispatchHook();
-export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;
+// Создаем типизированные хуки
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export default store;
+// Опционально: если нужен AppSelector тип
+export type AppSelector<Return> = (state: RootState) => Return;
+
+export default store

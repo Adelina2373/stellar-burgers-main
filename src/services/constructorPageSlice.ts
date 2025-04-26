@@ -9,17 +9,26 @@ export const fetchIngredients = createAsyncThunk(
       const response = await getIngredientsApi();
       return response;
     } catch (err) {
-        return thunkAPI.rejectWithValue(err);
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );
 
+interface ConstructorState {
+  ingredients: Array<TIngredient>;
+  isLoading: boolean;
+  constructorItems: 
+}
+
+const initialState: ConstructorState = {
+  ingredients: [],
+  isLoading: false,
+
+};
+
 const constructorPageSlice = createSlice({
   name: 'constructor',
-  initialState: {
-    ingredients: [] as TIngredient[],
-    isLoading: false
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -29,6 +38,7 @@ const constructorPageSlice = createSlice({
       .addCase(fetchIngredients.fulfilled, (state, action) => {
         state.ingredients = action.payload;
         state.isLoading = false;
+        console.log(state.ingredients);
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
         console.log('Constructor Error');
@@ -37,4 +47,4 @@ const constructorPageSlice = createSlice({
   }
 });
 
-export default constructorPageSlice.reducer
+export default constructorPageSlice.reducer;

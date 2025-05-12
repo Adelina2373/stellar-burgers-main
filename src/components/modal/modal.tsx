@@ -1,27 +1,42 @@
-import { FC, memo, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import React, { FC } from "react";
+import { createPortal } from "react-dom";
+import { useHistory } from "react-router-dom";
+import styles from './modal.module.css';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ModalOverlay } from "../modal-overlay/modal-overlay";
+import { TModal } from "../../services/types/types";
 
-import { TModalProps } from './type';
-import { ModalUI } from '@ui';
+export const Modal: FC<TModal> = ({ children, onClose }) => {
 
-const modalRoot = document.getElementById('modals');
-
-export const Modal: FC<TModalProps> = memo(({ title, onClose, children }) => {
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      e.key === 'Escape' && onClose();
+    const history = useHistory();
+    const closeModal = () => {
+        onClose ? onClose() : history.goBack();
     };
 
-    document.addEventListener('keydown', handleEsc);
-    return () => {
-      document.removeEventListener('keydown', handleEsc);
-    };
-  }, [onClose]);
+    React.useEffect(() => {
+        function onKeyDown(evt: KeyboardEvent) {
+            if (evt.key === 'Escape') {
+                closeModal()
+            }
+        }
 
-  return ReactDOM.createPortal(
-    <ModalUI title={title} onClose={onClose}>
-      {children}
-    </ModalUI>,
-    modalRoot as HTMLDivElement
-  );
-});
+        document.addEventListener('keydown', onKeyDown)
+
+        return () => {
+            document.removeEventListener('keydown', onKeyDown)
+        }
+    }, [])
+
+    return createPortal(
+        <>
+            <ModalOverlay onClose={closeModal} />
+            <div className={styles.modal}>
+                <button className={styles.closeButton} onClick={closeModal}>
+                    <CloseIcon type="primary" />
+                </button>
+                {children}
+            </div>
+        </>,
+        document.getElementById('modals') as HTMLDivElement
+    )
+}

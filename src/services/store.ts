@@ -1,22 +1,25 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import rootReducer from './rootReducer';
-import { RootState } from './rootReducer';
+import thunk from "redux-thunk";
+import { rootReducer } from "./reducers";
+import { compose, createStore, applyMiddleware } from 'redux';
+import { wsUrl } from "../utils/constants";
+import { wsActions, wsActionsUser } from "./actions/websockets";
+import { socketMiddleware } from "./middleware/socket-middleware";
+import { getCookie } from "../utils/сookies";
 
-// Создаем store первым
-const store = configureStore({
-  reducer: rootReducer,
-  devTools: process.env.NODE_ENV !== 'production'
-});
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-// Получаем тип состояния напрямую из store
-export type AppDispatch = typeof store.dispatch;
+const enhancer = composeEnhancers(
+  applyMiddleware(
+    thunk,
+    socketMiddleware(() => wsUrl + '/all', wsActions),
+    socketMiddleware(() => wsUrl + `?token=${getCookie('access')}`, wsActionsUser),
+  )
+);
+export const store = createStore(rootReducer, enhancer);
 
-// Создаем типизированные хуки
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-// Опционально: если нужен AppSelector тип
-export type AppSelector<Return> = (state: RootState) => Return;
-
-export default store;

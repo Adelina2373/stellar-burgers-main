@@ -13,15 +13,15 @@ export const BurgerIngredients: FC = () => {
   );
 
   /** TODO: взять переменные из стора */
-  const buns: Array<TIngredient> = ingredients.filter((element) => {
-    return element.type == 'bun';
-  });
-  const mains: Array<TIngredient> = ingredients.filter((element) => {
-    return element.type == 'main';
-  });
-  const sauces: Array<TIngredient> = ingredients.filter((element) => {
-    return element.type == 'sauce';
-  });
+  const buns: Array<TIngredient> = ingredients.filter(
+    (element) => element.type == 'bun'
+  );
+  const mains: Array<TIngredient> = ingredients.filter(
+    (element) => element.type == 'main'
+  );
+  const sauces: Array<TIngredient> = ingredients.filter(
+    (element) => element.type == 'sauce'
+  );
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);

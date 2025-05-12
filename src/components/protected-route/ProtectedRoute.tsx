@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { FC, ReactElement } from 'react';
+import { getCookie } from '../../utils/cookie';
 
 interface ProtectedRouteProps {
   onlyUnauth?: boolean;
@@ -11,7 +12,7 @@ export const ProtectedRoute: FC<ProtectedRouteProps> = ({
   children
 }) => {
   const location = useLocation();
-  const isAuthenticated = localStorage.getItem('accessToken');
+  const isAuthenticated = getCookie('accessToken');
 
   if (onlyUnauth && isAuthenticated) {
     const from = location.state?.from || { pathname: '/' };

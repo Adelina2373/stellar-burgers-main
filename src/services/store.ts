@@ -19,4 +19,4 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 // Опционально: если нужен AppSelector тип
 export type AppSelector<Return> = (state: RootState) => Return;
 
-export default store
+export default store;

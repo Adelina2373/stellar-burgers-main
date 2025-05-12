@@ -13,11 +13,11 @@ export const ConstructorPage: FC = () => {
   const { isLoading } = useAppSelector(
     (state: RootState) => state.constructorPage
   );
-  
+
   useEffect(() => {
     dispatch(fetchIngredients());
   }, [dispatch]);
-  
+
   return (
     <>
       {isLoading ? (

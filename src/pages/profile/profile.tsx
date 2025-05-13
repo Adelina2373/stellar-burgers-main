@@ -1,18 +1,31 @@
+import { TRegisterData } from '@api';
+import {
+  useAppDispatch,
+  useAppSelector,
+  RootState,
+  getUser,
+  updateUser,
+  fetchFeedIngredients,
+  fetchProfileIngredients
+} from '@services/index';
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 
 export const Profile: FC = () => {
   /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state: RootState) => state.profilePage);
 
   const [formValue, setFormValue] = useState({
     name: user.name,
     email: user.email,
     password: ''
   });
+
+  useEffect(() => {
+    dispatch(getUser());
+    dispatch(fetchProfileIngredients());
+  }, []);
 
   useEffect(() => {
     setFormValue((prevState) => ({
@@ -29,6 +42,12 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    const updateData: TRegisterData = {
+      name: formValue.name,
+      email: formValue.email,
+      password: formValue.password
+    };
+    dispatch(updateUser(updateData));
   };
 
   const handleCancel = (e: SyntheticEvent) => {

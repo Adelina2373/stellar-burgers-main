@@ -1,45 +1,127 @@
-import { FC, useMemo } from 'react';
-import { TConstructorIngredient } from '@utils-types';
-import { BurgerConstructorUI } from '@ui';
+import React from 'react';
+import styles from './burger-constructor.module.css';
+import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import { OrderRegistration } from '../order-registration/order-registration';
+import { useDrop } from 'react-dnd';
+import { nanoid } from 'nanoid';
+import { setBun, addIngredient } from '../../services/actions/burger-constructor';
+import { useSelector, useDispatch } from '../../services/hooks';
+import { useHistory } from 'react-router-dom';
+import { BurgerConstructorElement } from '../burger-constructor-element/burger-constructor-element';
+import { deleteIngredient } from '../../services/actions/burger-constructor';
+import { getOrderDetails } from '../../services/actions/order-details';
+import { Modal } from '../modal/modal';
+import { OrderDetails } from '../order-details/order-details';
+import { TIngredientType, TItem } from '../../services/types/types';
 
-export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
 
-  const orderRequest = false;
+export function BurgerConstructor() {
+    const dispatch = useDispatch()
+    const history = useHistory()
 
-  const orderModalData = null;
+    const main = useSelector(state => state.burgerConstructor.mainList)
+    const buns = useSelector(state => state.burgerConstructor.bunsList)
+    const idMainList = (main.map((item) => item._id))
+    const idBunsList = (buns.map((item) => item._id))
+    const idIngredientsList = idMainList.concat(idBunsList).concat(idBunsList)
 
-  const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
-  };
-  const closeOrderModal = () => {};
+    console.log(idIngredientsList)
 
-  const price = useMemo(
-    () =>
-      (constructorItems.bun ? constructorItems.bun.price * 2 : 0) +
-      constructorItems.ingredients.reduce(
-        (s: number, v: TConstructorIngredient) => s + v.price,
-        0
-      ),
-    [constructorItems]
-  );
+    const authorization = useSelector((state) => state.userAuthorization.authorization);
 
-  return null;
+    const [openModal, setOpenModal] = React.useState(false);
+    const handleOrderClick = () => {
+        if (!authorization) {
+            history.replace('/login?retpath=/')
+        } else {
+            setOpenModal(!openModal)
+            dispatch(getOrderDetails(idIngredientsList))
+        }
+    }
+    const closeModal = () => {
+        setOpenModal(!openModal);
+    }
 
-  return (
-    <BurgerConstructorUI
-      price={price}
-      orderRequest={orderRequest}
-      constructorItems={constructorItems}
-      orderModalData={orderModalData}
-      onOrderClick={onOrderClick}
-      closeOrderModal={closeOrderModal}
-    />
-  );
-};
+    const [, dropIngredient] = useDrop(() => ({
+        accept: 'ingredient',
+        drop: ((item: TItem) => addElement(item.ingredient))
+    }))
+
+    const addElement = (element: TIngredientType) => {
+        element = { ...element, id: nanoid() }
+        if (element.type === 'bun') {
+            dispatch(setBun(element))
+        }
+        if (element.type !== 'bun') {
+            dispatch(addIngredient(element))
+        }
+
+    }
+
+    const deleteElement = (element: TIngredientType) => {
+        dispatch(deleteIngredient(element))
+    }
+
+    return (
+        <section className={`${styles.burger_constructor} mt-25`} ref={dropIngredient}>
+            <ul className={`${styles.order_list} pl-3`}>
+                {buns.map((element) => {
+                    if (element.type === 'bun')
+                        return (
+                            <li className={`${styles.default_ingredient} mb-4 ml-8`} key={element.id}>
+                                <ConstructorElement
+                                    type="top"
+                                    isLocked={true}
+                                    text={`${element.name} (верх)`}
+                                    price={element.price}
+                                    thumbnail={element.image}
+                                />
+                            </li>
+                        )
+                }
+                )}
+                <div className={`${styles.scroll} pr-2`}>
+                    {main.map((element, index) => {
+                        if (element.type !== 'bun')
+                            return (
+                                <BurgerConstructorElement
+                                    element={element}
+                                    index={index}
+                                    id={element.id}
+                                    key={element.id}
+                                    deleteElement={deleteElement}
+                                />
+                            )
+                    }
+                    )}
+                </div>
+                {buns.map((element) => {
+                    if (element.type === 'bun')
+                        return (
+                            <li className={`${styles.default_ingredient} mt-4 ml-8`} key={element.id}>
+                                <ConstructorElement
+                                    type="bottom"
+                                    isLocked={true}
+                                    text={`${element.name} (низ)`}
+                                    price={element.price}
+                                    thumbnail={element.image}
+                                />
+                            </li>
+                        )
+                }
+                )}
+            </ul>
+            {buns.length > 0 ?
+                <OrderRegistration handleOrderClick={handleOrderClick} />
+                : null}
+            {openModal && (
+                <Modal onClose={closeModal}>
+                    <OrderDetails />
+                </Modal>
+            )}
+        </section>
+    )
+}
+
+// Оформить заказ без булочки не получится :(
+//     Веберите и перетащите булочку сюда 

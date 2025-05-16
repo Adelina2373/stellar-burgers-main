@@ -1,24 +1,28 @@
 {
-	"compilerOptions": {
-		"target": "es5",
-		"lib": ["dom", "dom.iterable", "esnext"],
-		"baseUrl": "src",
-		"paths": {
-			"@utils-types": ["./utils/types"],
-			"@ui": ["./components/ui"],
-			"@services/*": ["./services/*"]
-		},
-		"allowJs": true,
-		"skipLibCheck": true,
-		"esModuleInterop": true,
-		"strict": true,
-		"forceConsistentCasingInFileNames": true,
-		"module": "esnext",
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"noEmit": true,
-		"jsx": "react-jsx"
-	},
-	"include": ["src"]
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "typeRoots": ["node_modules/@types", "types/"],
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    },
+  },
+  "include": ["src", "types"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

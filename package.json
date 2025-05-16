@@ -1,68 +1,67 @@
 {
-	"name": "react-burger",
-	"version": "0.1.0",
-	"private": true,
-	"dependencies": {
-		"@testing-library/jest-dom": "^5.16.5",
-		"@testing-library/react": "^13.4.0",
-		"@testing-library/user-event": "^13.5.0",
-		"@types/jest": "^27.5.2",
-		"@types/node": "^16.11.59",
-		"@types/react": "^18.0.20",
-		"@types/react-dom": "^18.0.6",
-		"@ya.praktikum/react-developer-burger-ui-components": "^1.13.4",
-		"date-fns": "^2.29.3",
-		"dayjs": "^1.11.6",
-		"nanoid": "^4.0.0",
-		"react": "^18.2.0",
-		"react-dnd": "^16.0.1",
-		"react-dnd-html5-backend": "^16.0.1",
-		"react-dom": "^18.2.0",
-		"react-redux": "^8.0.4",
-		"react-router-dom": "5.2.1",
-		"react-scripts": "5.0.1",
-		"redux": "^4.2.0",
-		"redux-thunk": "^2.4.1",
-		"@reduxjs/toolkit": "^2.2.1",
-		"typescript": "^4.8.3",
-		"web-vitals": "^2.1.4"
-	},
-	"scripts": {
-		"predeploy": "npm run build",
-		"deploy": "gh-pages -d build",
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject",
-		"cypress": "cypress open cache clear",
-		"test:cypress": "cypress run"
-	},
-	"homepage": "./",
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	},
-	"devDependencies": {
-		"@4tw/cypress-drag-drop": "^2.2.2",
-		"@types/react-router-dom": "^5.3.3",
-		"cypress": "^11.2.0",
-		"eslint-plugin-cypress": "^2.12.1",
-		"gh-pages": "^4.0.0",
-		"jest": "^27.5.1",
-		"prop-types": "^15.8.1"
-	}
+  "name": "react-burger",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build --base=/stellar-burgers/",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write src/**/*.{ts,tsx}",
+    "cy:open": "cypress open",
+    "preview": "vite preview --base=/stellar-burgers/",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "start": "vite dev"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
+    "async-mutex": "^0.4.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "js-cookie": "^3.0.5",
+    "lucide-react": "^0.265.0",
+    "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.1.1",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "^5.0.1",
+    "tailwind-merge": "^1.14.0",
+    "tailwindcss-animate": "^1.0.6",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.2.4",
+    "@feature-sliced/eslint-config": "^0.1.0-beta.6",
+    "@types/js-cookie": "^3.0.3",
+    "@types/node": "^20.4.5",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@types/uuid": "^9.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "@vitejs/plugin-react": "^4.0.3",
+    "autoprefixer": "^10.4.14",
+    "cypress": "^12.17.4",
+    "eslint": "^8.46.0",
+    "eslint-config-prettier": "^8.9.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-boundaries": "^3.1.1",
+    "eslint-plugin-cypress": "^2.14.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.33.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "gh-pages": "^6.0.0",
+    "postcss": "^8.4.27",
+    "prettier": "^3.0.0",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  },
+  "homepage": "https://gyolkin.github.io/stellar-burgers"
 }

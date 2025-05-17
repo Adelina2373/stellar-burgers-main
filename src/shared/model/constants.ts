@@ -3,8 +3,8 @@ export const constantsMap = {
     home: {
       mainText: 'Соберите бургер',
       constructorContainer: {
-        onEmptyText: 'Перетащите сюда ингредиенты, чтобы собрать бургер',
-        onAddBunText: 'Добавьте булочку в заказ!',
+        onEmptyText: 'Место для ингридиентов',
+        onAddBunText: 'Добавить булочку',
       },
     },
     feed: {

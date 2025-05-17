@@ -16,7 +16,7 @@ export const paragraphVariants = cva('leading-normal', {
       small: 'text-sm',
       medium: 'text-2xl',
       large: 'text-4xl',
-      heading: 'text-8xl',
+      heading: 'text-6xl',
     },
     weight: {
       bold: 'font-bold',
